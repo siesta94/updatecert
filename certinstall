@@ -1,0 +1,12 @@
+#!/bin/bash
+mkdir /home/ec2-user/cert-temp/
+cd /home/ec2-user/cert-temp/ && aws s3 cp s3://airbus-dev-pm-backup-ireland/newkeys.tar.gz .
+tar xvf newkeys.tar.gz
+chmod 400 cert-n.pem
+chmod 400 key.pem
+mkdir /etc/ssl/certs/processmaker/backup-2020-06-01
+mv /etc/ssl/certs/processmaker/cert-n.pem /etc/ssl/certs/processmaker/backup-2020-06-01
+mv /etc/ssl/certs/processmaker/key.pem /etc/ssl/certs/processmaker/backup-2020-06-01
+cp /home/ec2-user/cert-temp/cert-n.pem /etc/ssl/certs/processmaker/
+cp /home/ec2-user/cert-temp/key.pem /etc/ssl/certs/processmaker/
+nginx -t
